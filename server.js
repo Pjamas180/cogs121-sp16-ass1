@@ -117,6 +117,34 @@ io.use(function(socket, next) {
 });
 
 /* TODO: Server-side Socket.io here */
+io.on('connection', function(socket){
+  socket.on('chat message', function(msg){
+    console.log('message: ' + msg);
+  });
+
+  socket.on("newsfeed", function(msg) {
+    // your solution to fill in, see step 7 for details
+    var date = new Date();
+    var post = new models.NewsFeed({
+    	twitterID: socket.request.session.passport.user,
+    	message: msg,
+    	posted: date
+    });
+
+    post.save(function (res, err) {
+    	if (err) {
+    		return err;
+    	}
+    	else {
+    		console.log("Post saved");
+    		res.redirect('/');
+    	}
+    });
+    io.emit("newsfeed", msg);
+});
+});
+
+
 
 // Start Server
 http.listen(app.get("port"), function() {

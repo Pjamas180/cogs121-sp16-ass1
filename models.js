@@ -8,4 +8,11 @@ var UserSchema = new mongoose.Schema({
     "photo": String
 });
 
+var NewsFeedSchema = new mongoose.Schema({
+	"user": String,
+    "message": String,
+    "posted": Date
+})
+
 exports.User = mongoose.model('message', UserSchema);
+exports.NewsFeed = mongoose.model('news', NewsFeedSchema);
